@@ -22,7 +22,13 @@ Com.Coppel.Web.Api/
 - **Npgsql** - PostgreSQL provider
 - **Swagger/OpenAPI** - Documentación de API
 - **Cloud SQL** - Base de datos en PostgreSQL
-- **GENIUS API** - Integración con modelos LLM
+- **GENIUS API** - Integración con modelos LLM para evaluación con salida JSON estructurada
+
+## 📝 Especificación del Servicio
+
+**Input**: Archivos Markdown (.md) con especificaciones frontend  
+**Procesamiento**: Evaluación síncrona con Genius API que retorna JSON estructurado  
+**Output**: Resultados de evaluación con scores, criterios y gate status
 
 ## 📋 Prerrequisitos
 
@@ -70,7 +76,9 @@ http://localhost:5000/swagger
 
 ### Evaluaciones
 
-- `POST /v1/evaluations` - Crear evaluación (subiendo PDFs)
+- `POST /v1/evaluations` - Crear evaluación (subiendo archivos Markdown .md)
+  - Recibe: `file_general` (markdown), `file_servicio` (markdown), `idempotencyKey` (opcional)
+  - Retorna: Evaluación completa con scores y criterios
 - `GET /v1/evaluations/{id}` - Obtener evaluación por ID
 
 ### Revisiones
