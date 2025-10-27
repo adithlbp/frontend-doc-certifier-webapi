@@ -5,7 +5,7 @@ namespace Com.Coppel.Web.Api.Core.Domain.Entities;
 /// <summary>
 /// Criterio de evaluación (catalogo)
 /// </summary>
-public class Criterion : BaseEntity
+public class Criterion : BaseEntity<string>
 {
     /// <summary>
     /// Versión del criterio

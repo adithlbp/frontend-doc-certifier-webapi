@@ -4,19 +4,18 @@ namespace Com.Coppel.Web.Api.Core.Domain.Entities
     /// Clase abstracta que representa una entidad base en el sistema.
     /// </summary>
     /// <typeparam name="TId">Tipo genérico para el identificador de la entidad.</typeparam>
-    public abstract class BaseEntity<TId> where TId : struct
+    public abstract class BaseEntity<TId>
     {
         /// <summary>
         /// Propiedad que representa el identificador de la entidad.
         /// </summary>
-        public TId Id { get; set; }
+        public TId Id { get; set; } = default!;
 
         /// <summary>
         /// Constructor sin parámetros que establece el valor predeterminado para la propiedad Id.
         /// </summary>
         protected BaseEntity()
         {
-            Id = default;
         }
 
         /// <summary>

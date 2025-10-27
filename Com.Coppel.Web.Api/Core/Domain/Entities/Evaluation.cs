@@ -6,7 +6,7 @@ namespace Com.Coppel.Web.Api.Core.Domain.Entities;
 /// <summary>
 /// Evaluación de documentos con resultados de criterios
 /// </summary>
-public class Evaluation : BaseEntity
+public class Evaluation : BaseEntity<string>
 {
     /// <summary>
     /// ID de la revisión asociada

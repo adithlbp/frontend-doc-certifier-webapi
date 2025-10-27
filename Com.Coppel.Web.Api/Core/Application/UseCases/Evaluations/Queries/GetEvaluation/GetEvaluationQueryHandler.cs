@@ -36,7 +36,7 @@ public class GetEvaluationQueryHandler
         return MapToDto(evaluation);
     }
 
-    private EvaluationDto MapToDto(Evaluation evaluation)
+    private static EvaluationDto MapToDto(Evaluation evaluation)
     {
         return new EvaluationDto
         {

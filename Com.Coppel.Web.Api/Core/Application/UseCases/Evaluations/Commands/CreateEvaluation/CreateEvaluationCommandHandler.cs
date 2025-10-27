@@ -165,7 +165,7 @@ public class CreateEvaluationCommandHandler
         }
     }
 
-    private async Task<string> ExtractPdfContentAsync(IFormFile file, CancellationToken cancellationToken)
+    private static async Task<string> ExtractPdfContentAsync(IFormFile file, CancellationToken cancellationToken)
     {
         // TODO: Implementar extracción real de PDF usando iTextSharp
         // Por ahora retornamos contenido simulado
@@ -173,14 +173,14 @@ public class CreateEvaluationCommandHandler
         return await stream.ReadToEndAsync();
     }
 
-    private string CalculateChecksum(string content)
+    private static string CalculateChecksum(string content)
     {
         var bytes = Encoding.UTF8.GetBytes(content);
         var hash = SHA256.HashData(bytes);
         return $"sha256:{Convert.ToHexString(hash).ToLowerInvariant()}";
     }
 
-    private (int ScorePass, int ScoreFail, int ScoreNa, int ScoreTotal, int CritPass, int CritFail, int CritNa, bool GatePassed, string GateReason) 
+    private static (int ScorePass, int ScoreFail, int ScoreNa, int ScoreTotal, int CritPass, int CritFail, int CritNa, bool GatePassed, string GateReason) 
         CalculateScores(JsonDocument resultJson)
     {
         // TODO: Implementar lógica real de cálculo de scores
@@ -188,7 +188,7 @@ public class CreateEvaluationCommandHandler
         return (9, 4, 3, 16, 5, 2, 1, false, "Hay 2 criterios críticos en FAIL");
     }
 
-    private EvaluationDto MapToDto(Evaluation evaluation)
+    private static EvaluationDto MapToDto(Evaluation evaluation)
     {
         return new EvaluationDto
         {

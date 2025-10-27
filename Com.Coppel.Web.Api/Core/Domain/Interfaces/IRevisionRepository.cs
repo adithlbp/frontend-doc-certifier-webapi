@@ -24,8 +24,8 @@ public interface IRevisionRepository
     Task<List<Revision>> SearchAsync(
         string? searchTerm,
         string? type,
-        DateTime? from,
-        DateTime? to,
+        DateTime? fromDate,
+        DateTime? toDate,
         int page,
         int pageSize,
         string orderBy,
@@ -34,8 +34,8 @@ public interface IRevisionRepository
     Task<int> CountAsync(
         string? searchTerm,
         string? type,
-        DateTime? from,
-        DateTime? to,
+        DateTime? fromDate,
+        DateTime? toDate,
         CancellationToken cancellationToken = default);
 }
 

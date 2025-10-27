@@ -68,8 +68,8 @@ public class RevisionRepository : IRevisionRepository
     public async Task<List<Revision>> SearchAsync(
         string? searchTerm,
         string? type,
-        DateTime? from,
-        DateTime? to,
+        DateTime? fromDate,
+        DateTime? toDate,
         int page,
         int pageSize,
         string orderBy,
@@ -92,18 +92,18 @@ public class RevisionRepository : IRevisionRepository
         }
 
         // Filtrar por rango de fechas
-        if (from.HasValue)
+        if (fromDate.HasValue)
         {
-            query = query.Where(r => r.UploadedAt >= from.Value);
+            query = query.Where(r => r.UploadedAt >= fromDate.Value);
         }
 
-        if (to.HasValue)
+        if (toDate.HasValue)
         {
-            query = query.Where(r => r.UploadedAt <= to.Value);
+            query = query.Where(r => r.UploadedAt <= toDate.Value);
         }
 
         // Ordenar
-        query = orderBy.ToLower() switch
+        query = orderBy.ToLowerInvariant() switch
         {
             "asc" => query.OrderBy(r => r.UploadedAt),
             _ => query.OrderByDescending(r => r.UploadedAt)
@@ -120,8 +120,8 @@ public class RevisionRepository : IRevisionRepository
     public async Task<int> CountAsync(
         string? searchTerm,
         string? type,
-        DateTime? from,
-        DateTime? to,
+        DateTime? fromDate,
+        DateTime? toDate,
         CancellationToken cancellationToken = default)
     {
         var query = _context.Revisions.AsQueryable();
@@ -138,14 +138,14 @@ public class RevisionRepository : IRevisionRepository
             query = query.Where(r => r.Type == type);
         }
 
-        if (from.HasValue)
+        if (fromDate.HasValue)
         {
-            query = query.Where(r => r.UploadedAt >= from.Value);
+            query = query.Where(r => r.UploadedAt >= fromDate.Value);
         }
 
-        if (to.HasValue)
+        if (toDate.HasValue)
         {
-            query = query.Where(r => r.UploadedAt <= to.Value);
+            query = query.Where(r => r.UploadedAt <= toDate.Value);
         }
 
         return await query.CountAsync(cancellationToken);

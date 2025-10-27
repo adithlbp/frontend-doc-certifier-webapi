@@ -5,7 +5,7 @@ namespace Com.Coppel.Web.Api.Core.Domain.Entities;
 /// <summary>
 /// Criterio evaluado en una evaluación específica
 /// </summary>
-public class EvaluationCriterion : BaseEntity
+public class EvaluationCriterion : BaseEntity<string>
 {
     public string EvaluationId { get; set; } = string.Empty;
     

@@ -5,7 +5,7 @@ namespace Com.Coppel.Web.Api.Core.Domain.Entities;
 /// <summary>
 /// Revisión de documento (general o frontend)
 /// </summary>
-public class Revision : BaseEntity
+public class Revision : BaseEntity<string>
 {
     public int Number { get; set; }
     
