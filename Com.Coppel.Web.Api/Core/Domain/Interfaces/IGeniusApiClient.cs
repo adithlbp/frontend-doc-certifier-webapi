@@ -43,15 +43,67 @@ public class GeniusEvaluationResponse
 /// </summary>
 public class EvaluationResultJson
 {
-    public OverallStatusDto OverallStatus { get; set; } = new();
-    public ScoresDto Scores { get; set; } = new();
-    public GateDto Gate { get; set; } = new();
+    public GeniusOverallStatusDto OverallStatus { get; set; } = new();
+    public GeniusScoresDto Scores { get; set; } = new();
+    public GeniusGateDto Gate { get; set; } = new();
     public List<CriterionResultDto> Criteria { get; set; } = new();
 }
 
-public class OverallStatusDto
+public class GeniusOverallStatusDto
 {
     public string Status { get; set; } = "PENDING"; // PASS|FAIL|PARTIAL
+}
+
+public class GeniusScoresDto
+{
+    public GeniusScoreByStatusDto ByStatus { get; set; } = new();
+    public Dictionary<string, GeniusSeverityScoreDto> BySeverity { get; set; } = new();
+    public GeniusCriticalScoreDto Critical { get; set; } = new();
+}
+
+public class GeniusScoreByStatusDto
+{
+    public int Pass { get; set; }
+    public int Fail { get; set; }
+    public int Na { get; set; }
+    public int Total { get; set; }
+}
+
+public class GeniusSeverityScoreDto
+{
+    public int Pass { get; set; }
+    public int Fail { get; set; }
+    public int Na { get; set; }
+    public int Total { get; set; }
+}
+
+public class GeniusCriticalScoreDto
+{
+    public int Passed { get; set; }
+    public int Failed { get; set; }
+    public int Na { get; set; }
+    public GeniusCriticalIdsDto Ids { get; set; } = new();
+}
+
+public class GeniusCriticalIdsDto
+{
+    public List<string> Passed { get; set; } = new();
+    public List<string> Failed { get; set; } = new();
+    public List<string> Na { get; set; } = new();
+}
+
+public class GeniusGateDto
+{
+    public string Rule { get; set; } = string.Empty;
+    public bool Passed { get; set; }
+    public string Reason { get; set; } = string.Empty;
+    public GeniusGateDetailsDto Details { get; set; } = new();
+}
+
+public class GeniusGateDetailsDto
+{
+    public int CriticalFailedCount { get; set; }
+    public List<string> FailedIds { get; set; } = new();
 }
 
 public class CriterionResultDto

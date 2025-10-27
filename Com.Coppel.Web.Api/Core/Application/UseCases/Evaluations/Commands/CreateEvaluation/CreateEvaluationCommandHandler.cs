@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Com.Coppel.Web.Api.Core.Application.DTOs;
 using Com.Coppel.Web.Api.Core.Domain.Entities;
 using Com.Coppel.Web.Api.Core.Domain.Interfaces;
@@ -126,23 +127,31 @@ public class CreateEvaluationCommandHandler
                 return MapToDto(evaluation);
             }
 
-            // 6. Procesar resultado y calcular scores
-            var resultJson = JsonDocument.Parse(geniusResponse.ResultJson ?? "{}");
-            var scores = CalculateScores(resultJson);
+            // 6. Procesar resultado estructurado de Genius API
+            if (geniusResponse.Result == null)
+            {
+                throw new InvalidOperationException("Genius API no retornó resultado válido");
+            }
+
+            var result = geniusResponse.Result;
+            var scores = CalculateScores(result);
             
             evaluation.Status = "DONE";
             evaluation.CompletedAt = DateTime.UtcNow;
-            evaluation.OverallStatus = scores.GatePassed ? "PASS" : "FAIL";
-            evaluation.ScorePass = scores.ScorePass;
-            evaluation.ScoreFail = scores.ScoreFail;
-            evaluation.ScoreNa = scores.ScoreNa;
-            evaluation.ScoreTotal = scores.ScoreTotal;
-            evaluation.CritPass = scores.CritPass;
-            evaluation.CritFail = scores.CritFail;
-            evaluation.CritNa = scores.CritNa;
-            evaluation.GatePassed = scores.GatePassed;
-            evaluation.GateReason = scores.GateReason;
-            evaluation.RawResult = resultJson;
+            evaluation.OverallStatus = result.OverallStatus.Status;
+            evaluation.ScorePass = result.Scores.ByStatus.Pass;
+            evaluation.ScoreFail = result.Scores.ByStatus.Fail;
+            evaluation.ScoreNa = result.Scores.ByStatus.Na;
+            evaluation.ScoreTotal = result.Scores.ByStatus.Total;
+            evaluation.CritPass = result.Scores.Critical.Passed;
+            evaluation.CritFail = result.Scores.Critical.Failed;
+            evaluation.CritNa = result.Scores.Critical.Na;
+            evaluation.GatePassed = result.Gate.Passed;
+            evaluation.GateReason = result.Gate.Reason;
+            
+            // Guardar resultado completo como JSON
+            var resultJson = JsonSerializer.Serialize(result);
+            evaluation.RawResult = JsonDocument.Parse(resultJson);
 
             await _evaluationRepository.UpdateAsync(evaluation, cancellationToken);
             await _evaluationRepository.SaveChangesAsync(cancellationToken);
@@ -180,11 +189,20 @@ public class CreateEvaluationCommandHandler
     }
 
     private static (int ScorePass, int ScoreFail, int ScoreNa, int ScoreTotal, int CritPass, int CritFail, int CritNa, bool GatePassed, string GateReason) 
-        CalculateScores(JsonDocument resultJson)
+        CalculateScores(EvaluationResultJson result)
     {
-        // TODO: Implementar lógica real de cálculo de scores
-        // Por ahora valores por defecto
-        return (9, 4, 3, 16, 5, 2, 1, false, "Hay 2 criterios críticos en FAIL");
+        // Los scores ya vienen calculados desde Genius API
+        return (
+            result.Scores.ByStatus.Pass,
+            result.Scores.ByStatus.Fail,
+            result.Scores.ByStatus.Na,
+            result.Scores.ByStatus.Total,
+            result.Scores.Critical.Passed,
+            result.Scores.Critical.Failed,
+            result.Scores.Critical.Na,
+            result.Gate.Passed,
+            result.Gate.Reason
+        );
     }
 
     private static EvaluationDto MapToDto(Evaluation evaluation)
