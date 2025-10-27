@@ -1,0 +1,7 @@
+# this is the Migrations dotnet folder, it should not be analyzed
+
+root = true # to prevent parent configurations from taking effect
+
+[*.cs]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none

@@ -1,0 +1,84 @@
+# Archivo de configuración .NET - v1.0.0
+# Este archivo define las reglas de estilo, nomenclatura y análisis para proyectos .NET.
+
+# Configuración general
+root = true
+
+# Reglas de Estilo de Nomenclatura
+
+# Tipos (clases, interfaces, etc.) deben estar en PascalCase
+[*.cs]
+dotnet_naming_rule.types_should_be_pascal_case.severity = error
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+
+# Miembros (excepto campos) deben estar en PascalCase
+dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = error
+dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
+
+# Reglas de Estilo de Código
+
+# Preferir expresiones de propiedades, indexadores y accesores
+csharp_style_expression_bodied_properties = true:error
+csharp_style_expression_bodied_indexers = true:error
+csharp_style_expression_bodied_accessors = true:error
+
+# Permitir declaraciones incrustadas en la misma línea y líneas en blanco entre llaves
+csharp_style_allow_embedded_statements_on_same_line_experimental = true:error
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:error
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true:error
+
+# Espaciado alrededor de operadores binarios y etiquetas de indentación
+csharp_space_around_binary_operators = before_and_after
+csharp_indent_labels = flush_left
+
+# Reglas de Lenguaje
+
+# Preferir llaves solo en declaraciones multilinea
+csharp_prefer_braces = when_multiline:error
+
+# Preferir declaraciones a nivel superior
+csharp_style_prefer_top_level_statements = true:silent
+
+# No permitir múltiples líneas en blanco
+dotnet_style_allow_multiple_blank_lines_experimental = false:error
+
+# Permitir declaración inmediatamente después de un bloque
+dotnet_style_allow_statement_immediately_after_block_experimental = true:error
+
+# Reglas de Importación
+
+# Ordenar directivas de importación con las del sistema primero
+dotnet_sort_system_directives_first = true
+
+# Separar grupos de directivas de importación
+dotnet_separate_import_directive_groups = true
+
+# Reglas de Análisis
+
+# Configuración general de severidad para el análisis de rendimiento y análisis general
+dotnet_analyzer_diagnostic.category-performance.severity = warning
+
+# Reglas de Análisis Específicas
+
+# Marcar métodos estáticos que no usan 'this'
+dotnet_diagnostic.CA1822.severity = error
+
+# Nombres de miembros no deben comenzar con guión bajo
+dotnet_diagnostic.IDE1006.severity = error
+
+# Reglas para identificadores de nombres de miembros y parámetros
+dotnet_diagnostic.CA1715.severity = error
+dotnet_diagnostic.CA1716.severity = error
+dotnet_diagnostic.CA1707.severity = error
+dotnet_diagnostic.CA1708.severity = error
+
+# Reglas para la especificación de CultureInfo y IFormatProvider
+dotnet_diagnostic.CA1304.severity = error
+dotnet_diagnostic.CA1305.severity = error
+
+# Reglas para evitar declarar miembros visibles o llamar a métodos sobrecargados
+dotnet_diagnostic.CA1051.severity = error
+dotnet_diagnostic.CA1311.severity = error
+dotnet_diagnostic.CA1510.severity = error
+dotnet_diagnostic.CA1018.severity = error
+dotnet_diagnostic.CA1000.severity = error
