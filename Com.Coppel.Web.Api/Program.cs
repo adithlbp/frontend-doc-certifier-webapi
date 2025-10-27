@@ -4,6 +4,8 @@ using Com.Coppel.Web.Api.Core.Domain.Interfaces;
 using Com.Coppel.Web.Api.Infrastructure.Clients;
 using Com.Coppel.Web.Api.Infrastructure.Persistence.Repositories;
 using Com.Coppel.Web.Api.Core.Application.UseCases.Evaluations.Commands.CreateEvaluation;
+using Com.Coppel.Web.Api.Core.Application.UseCases.Evaluations.Queries.GetEvaluation;
+using Com.Coppel.Web.Api.Core.Application.UseCases.Revisions.Queries.GetRevisions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Npgsql;
@@ -81,6 +83,8 @@ namespace Com.Coppel.Web.Api
 
             // Registro de Handlers
             builder.Services.AddScoped<CreateEvaluationCommandHandler>();
+            builder.Services.AddScoped<GetEvaluationQueryHandler>();
+            builder.Services.AddScoped<GetRevisionsQueryHandler>();
 
             // Clean Architecture Layers (mantener para compatibilidad)
             builder.Services.AddInfrastructure(builder.Configuration);

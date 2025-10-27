@@ -1,5 +1,6 @@
 using Com.Coppel.Web.Api.Core.Application.DTOs;
 using Com.Coppel.Web.Api.Core.Application.UseCases.Evaluations.Commands.CreateEvaluation;
+using Com.Coppel.Web.Api.Core.Application.UseCases.Evaluations.Queries.GetEvaluation;
 using Com.Coppel.Web.Api.Presentation.Common;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +14,18 @@ namespace Com.Coppel.Web.Api.Presentation.Controllers;
 public class EvaluationsController : ControllerBase
 {
     private readonly CreateEvaluationCommandHandler _createHandler;
+    private readonly GetEvaluationQueryHandler _getHandler;
     private readonly TraceIdentifier _traceIdentifier;
     private readonly ILogger<EvaluationsController> _logger;
 
     public EvaluationsController(
         CreateEvaluationCommandHandler createHandler,
+        GetEvaluationQueryHandler getHandler,
         TraceIdentifier traceIdentifier,
         ILogger<EvaluationsController> logger)
     {
         _createHandler = createHandler;
+        _getHandler = getHandler;
         _traceIdentifier = traceIdentifier;
         _logger = logger;
     }
@@ -74,8 +78,17 @@ public class EvaluationsController : ControllerBase
         [FromRoute] string id,
         CancellationToken cancellationToken = default)
     {
-        // TODO: Implementar query handler
-        return NotFound();
+        _logger.LogInformation("Obteniendo evaluación por ID: {Id}", id);
+
+        var query = new GetEvaluationQuery(id);
+        var result = await _getHandler.Handle(query, cancellationToken);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
     }
 }
 
