@@ -48,9 +48,9 @@ public class CreateEvaluationCommandHandler
             }
         }
 
-        // 2. Procesar PDFs y extraer contenido
-        var documentGeneralContent = await ExtractPdfContentAsync(command.Documents.FileGeneral, cancellationToken);
-        var documentServicioContent = await ExtractPdfContentAsync(command.Documents.FileServicio, cancellationToken);
+        // 2. Procesar Markdown y extraer contenido
+        var documentGeneralContent = await ExtractMarkdownContentAsync(command.Documents.FileGeneral, cancellationToken);
+        var documentServicioContent = await ExtractMarkdownContentAsync(command.Documents.FileServicio, cancellationToken);
 
         // 3. Crear revisiones en la base de datos
         var generalKey = $"especificacion-general-{DateTime.UtcNow:yyyyMMdd}";
@@ -106,8 +106,8 @@ public class CreateEvaluationCommandHandler
             // 5. Llamar a Genius API
             var geniusRequest = new GeniusEvaluationRequest
             {
-                DocumentGeneral = documentGeneralContent,
-                DocumentServicio = documentServicioContent,
+                DocumentGeneralMarkdown = documentGeneralContent,
+                DocumentServicioMarkdown = documentServicioContent,
                 Model = "gemini-1.5-pro",
                 PromptVersion = "v0.3"
             };
@@ -165,10 +165,9 @@ public class CreateEvaluationCommandHandler
         }
     }
 
-    private static async Task<string> ExtractPdfContentAsync(IFormFile file, CancellationToken cancellationToken)
+    private static async Task<string> ExtractMarkdownContentAsync(IFormFile file, CancellationToken cancellationToken)
     {
-        // TODO: Implementar extracción real de PDF usando iTextSharp
-        // Por ahora retornamos contenido simulado
+        // Markdown es texto plano, leer directamente
         using var stream = new StreamReader(file.OpenReadStream());
         return await stream.ReadToEndAsync();
     }

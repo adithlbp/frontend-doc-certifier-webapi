@@ -8,13 +8,13 @@ namespace Com.Coppel.Web.Api.Core.Application.DTOs;
 public class UploadDocumentsDto
 {
     /// <summary>
-    /// Archivo PDF de Especificación General (obligatorio)
+    /// Archivo Markdown (.md) de Especificación General (obligatorio)
     /// </summary>
     [Required]
     public IFormFile FileGeneral { get; set; } = null!;
     
     /// <summary>
-    /// Archivo PDF de Especificación de Frontend (obligatorio)
+    /// Archivo Markdown (.md) de Especificación de Frontend (obligatorio)
     /// </summary>
     [Required]
     public IFormFile FileServicio { get; set; } = null!;

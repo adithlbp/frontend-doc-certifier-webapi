@@ -12,6 +12,11 @@ public class RevisionSummaryDto
     public string Name { get; set; } = string.Empty;
     public DateTime UploadedAt { get; set; }
     public string Checksum { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Contenido del markdown
+    /// </summary>
+    public string? Content { get; set; }
     public SpecMetadataDto? SpecMetadata { get; set; }
     public EvaluationSummaryDto? Evaluation { get; set; }
 }

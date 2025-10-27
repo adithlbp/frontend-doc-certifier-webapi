@@ -43,6 +43,11 @@ public class DocumentInfoDto
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Checksum { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Contenido extraído del markdown
+    /// </summary>
+    public string? Content { get; set; }
     public RevisionInfoDto? Revision { get; set; }
     public SpecMetadataDto? SpecMetadata { get; set; }
 }

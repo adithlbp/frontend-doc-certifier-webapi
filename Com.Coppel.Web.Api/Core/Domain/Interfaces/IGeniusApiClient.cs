@@ -16,21 +16,54 @@ public interface IGeniusApiClient
 /// </summary>
 public class GeniusEvaluationRequest
 {
-    public string DocumentGeneral { get; set; } = string.Empty;
-    public string DocumentServicio { get; set; } = string.Empty;
+    public string DocumentGeneralMarkdown { get; set; } = string.Empty;
+    public string DocumentServicioMarkdown { get; set; } = string.Empty;
     public string? Model { get; set; }
     public string? PromptVersion { get; set; }
 }
 
 /// <summary>
-/// Response de Genius API
+/// Response de Genius API - Formato JSON estructurado
 /// </summary>
 public class GeniusEvaluationResponse
 {
     public bool Success { get; set; }
     public string? Error { get; set; }
-    public string? ResultJson { get; set; }
+    
+    /// <summary>
+    /// Resultado en formato JSON estructurado con scores y criterios
+    /// </summary>
+    public EvaluationResultJson? Result { get; set; }
+    
     public TokenUsage? TokenUsage { get; set; }
+}
+
+/// <summary>
+/// Formato estructurado de respuesta de evaluación
+/// </summary>
+public class EvaluationResultJson
+{
+    public OverallStatusDto OverallStatus { get; set; } = new();
+    public ScoresDto Scores { get; set; } = new();
+    public GateDto Gate { get; set; } = new();
+    public List<CriterionResultDto> Criteria { get; set; } = new();
+}
+
+public class OverallStatusDto
+{
+    public string Status { get; set; } = "PENDING"; // PASS|FAIL|PARTIAL
+}
+
+public class CriterionResultDto
+{
+    public string Id { get; set; } = string.Empty;
+    public string Category { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public bool Applicable { get; set; }
+    public string Status { get; set; } = "N/A"; // PASS|FAIL|N/A
+    public string Severity { get; set; } = "MEDIUM";
+    public string? Evidence { get; set; }
+    public string? Comments { get; set; }
 }
 
 public class TokenUsage
