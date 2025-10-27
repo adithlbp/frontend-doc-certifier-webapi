@@ -134,7 +134,6 @@ public class CreateEvaluationCommandHandler
             }
 
             var result = geniusResponse.Result;
-            var scores = CalculateScores(result);
             
             evaluation.Status = "DONE";
             evaluation.CompletedAt = DateTime.UtcNow;
@@ -153,8 +152,16 @@ public class CreateEvaluationCommandHandler
             var resultJson = JsonSerializer.Serialize(result);
             evaluation.RawResult = JsonDocument.Parse(resultJson);
 
+            // Guardar criterios evaluados
             await _evaluationRepository.UpdateAsync(evaluation, cancellationToken);
             await _evaluationRepository.SaveChangesAsync(cancellationToken);
+            
+            // TODO: Persistir criteria individual si es necesario
+            // foreach (var criterion in result.Criteria)
+            // {
+            //     var evalCriterion = new EvaluationCriterion { ... };
+            //     await _evaluationRepository.AddCriterionAsync(evalCriterion, cancellationToken);
+            // }
 
             _logger.LogInformation("Evaluación completada exitosamente");
 
@@ -188,22 +195,6 @@ public class CreateEvaluationCommandHandler
         return $"sha256:{Convert.ToHexString(hash).ToLowerInvariant()}";
     }
 
-    private static (int ScorePass, int ScoreFail, int ScoreNa, int ScoreTotal, int CritPass, int CritFail, int CritNa, bool GatePassed, string GateReason) 
-        CalculateScores(EvaluationResultJson result)
-    {
-        // Los scores ya vienen calculados desde Genius API
-        return (
-            result.Scores.ByStatus.Pass,
-            result.Scores.ByStatus.Fail,
-            result.Scores.ByStatus.Na,
-            result.Scores.ByStatus.Total,
-            result.Scores.Critical.Passed,
-            result.Scores.Critical.Failed,
-            result.Scores.Critical.Na,
-            result.Gate.Passed,
-            result.Gate.Reason
-        );
-    }
 
     private static EvaluationDto MapToDto(Evaluation evaluation)
     {
